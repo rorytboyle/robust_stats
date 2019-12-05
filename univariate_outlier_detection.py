@@ -56,7 +56,11 @@ def replace_outliers(col):
     
 def detect_univariate_outliers(df, threshold=2.5, replace=True):
     """
-    CODE DESCRIPTION
+    Detects outliers in a dataframe and returns a boolean dataframe where True
+    = outlier, and False = not an outlier. Detects outliers based on criterion
+    of median +/- (t * Median Absolute Deviation) where t = a specified 
+    threshold. Also returns a 'winsorized' dataframe where outliers are
+    replaced with a value = median +/- (t * Median Absolute Deviation) 
 
     :param df: pandas df containing data to be checked for outliers
     :param threshold: rejection threshold. Default = 2.5 (Leys et al., 2013). 
