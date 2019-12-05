@@ -1,6 +1,6 @@
 """
 Robust univariate outlier detection
-@author: Rory Boyle rorytboyle@gmail.com
+@author: Rory Boyle @rorytboyle@gmail.com
 @date: 05/12/2019
 """
 import pandas as pd
@@ -39,17 +39,14 @@ def replace_outliers(col):
     :return col: df with single col containing data where outliers 
     have been replaced with next most extreme values   
     """
-    # get next most extreme upper value (that is not an outlier)
-        
-    # get next most extreme lower value (that is not an outlier)
-
-    # replace upper (currently replaces with Upper and Lower MAD thresholds)
-    # MAY HAVE TO CHANGE DEPDENDING ON WHETHER VALUES SHOULD BE REPLACED WITH
-    # NEXT MOST EXTREME VALUES OR WITH MAD THRESHOLD VALUES
+    # replace outliers above upper threshold with the upper threshold value
+    # (i.e. the median + (t * MAD))
     upperThresh = col.loc['upper'].item()
-    lowerThresh = col.loc['lower'].item()
-    
     col.where(col <= upperThresh, upperThresh, inplace=True)
+    
+    # replace outliers below lower threshold with the lower threshold value
+    # (i.e. the median - (t * MAD))
+    lowerThresh = col.loc['lower'].item()    
     col.where(col >= lowerThresh, lowerThresh, inplace=True)
     
     return col
