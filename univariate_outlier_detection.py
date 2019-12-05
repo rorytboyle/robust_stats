@@ -14,20 +14,14 @@ def make_boolean_column(col):
     
     :param col: df containing single col from df containing data with upper and
     lower rejection thresholds appended.
-    :return bool_col: df with single Boolean col containing True in cases
+    :return outlier_bool: df with single Boolean col containing True in cases
     containing identified outliers and False elsewhere.
     """
-    # make boolean for upper threshold
-    upper_bool = col > col.loc['upper']
-    lower_bool = col < col.loc['lower']
+    # make boolean dataframe (single column) where true = outlier
+    # i.e. set values to false if not an outlier
+    outlier_bool = (col > col.loc['upper']) | (col < col.loc['lower'])
     
-    # set values to false if not an outlier
-    bool_col = col.where(upper_bool | lower_bool, False)
-    
-    # if not false, replace with true (i.e. set outliers to True)
-    bool_col.where(bool_col==False, True ,inplace=True)
-    
-    return bool_col
+    return outlier_bool
 
 def replace_outliers(col):
     """ 
