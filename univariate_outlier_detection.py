@@ -26,7 +26,7 @@ def make_boolean_column(col):
 def replace_outliers(col):
     """ 
     Replaces identified outliers with the median +/- (t * Median Absolute
-    Deviation) where t = threshold as specific in detect_univariate_outliers
+    Deviation) where t = threshold as specified in detect_univariate_outliers
     
     :param col: df containing single col from df containing data with upper and
     lower rejection thresholds appended.
