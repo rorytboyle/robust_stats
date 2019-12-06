@@ -33,6 +33,9 @@ def replace_outliers(col):
     :return col: df with single col containing data where outliers 
     have been replaced with next most extreme values   
     """
+    # get column where nan == True
+    nan_col = col.isnull()
+    
     # replace outliers above upper threshold with the upper threshold value
     # (i.e. the median + (t * MAD))
     upperThresh = col.loc['upper'].item()
@@ -42,6 +45,9 @@ def replace_outliers(col):
     # (i.e. the median - (t * MAD))
     lowerThresh = col.loc['lower'].item()    
     col.where(col >= lowerThresh, lowerThresh, inplace=True)
+    
+    # change where values should be nans back to nans
+    col.where(nan_col==False, np.nan, inplace=True)
     
     return col
     
@@ -67,12 +73,13 @@ def detect_univariate_outliers(df, threshold=2.5, replace=True):
     if replace=True)
     """
     # Calculate MAD for each variable p
-    mad_values = robust.scale.mad(df)
-    
-    # Get MAD for each column
-    mad = pd.DataFrame(mad_values.reshape(-1, len(mad_values)),
-                       columns=df.columns, index=['mad'])
-    
+    # Have to use list comprehension as nans must be dropped individually from
+    # each column as robust.scale.mad() cannot handle nans.
+    mad_values = [robust.scale.mad(df[[col]].dropna()).item() for col in df.columns]
+
+    # turn list into dataframe
+    mad=pd.DataFrame([mad_values], columns=df.columns, index=['mad'])
+
     # Get median and add to mad dataframe
     median = df.median().rename('median')
     mad = mad.append(median)
