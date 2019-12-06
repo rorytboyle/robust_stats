@@ -1,6 +1,6 @@
 """
 Robust univariate outlier detection
-@author: Rory Boyle @rorytboyle@gmail.com
+@author: Rory Boyle rorytboyle@gmail.com
 @date: 05/12/2019
 """
 import pandas as pd
