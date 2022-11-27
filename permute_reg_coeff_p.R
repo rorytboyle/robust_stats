@@ -68,7 +68,7 @@ obs_coeff <- obs_model$coefficients[var]
 perm_coeffs_all <- lapply(perm_models, '[[', 'coefficients')
 perm_coeffs <- unlist(lapply(perm_coeffs_all, '[[', var))
 
-# Show location of observed p-value in null distribution
+# Show location of observed p-value in empirical null distribution
 hist(perm_coeffs)
 abline(v=obs_coeff, col='red', lwd=3)
 
