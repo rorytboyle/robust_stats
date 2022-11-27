@@ -1,10 +1,10 @@
 #' Obtain permuted p-value for partial regression coefficient
 #' 
 #' Calculate permuted p-value for a partial regression coefficient based using
-#' formula outlined by Manly et al. (1997), whereby permuted p-value is equal to
-#' the probability of a randomly permuted regression coefficients having an 
-#' absolute value greater than or equal to the absolute value of the observed
-#' regression coefficient.
+#' formula outlined by Manly et al. (1997), whereby the permuted p-value is 
+#' equal to the probability of a randomly permuted regression coefficients 
+#' having an absolute value greater than or equal to the absolute value of the
+#' observed regression coefficient.
 #' 
 #' @param reg_form String specifying the regression formula in the format 'DV
 #'  ~ IV1 + IV2 ... + IV3'.
