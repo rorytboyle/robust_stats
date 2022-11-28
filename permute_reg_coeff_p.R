@@ -3,8 +3,8 @@
 #' Calculate permuted p-value for a partial regression coefficient based using
 #' formula outlined by Manly et al. (1997), whereby the permuted p-value is 
 #' equal to the probability of a randomly permuted regression coefficients 
-#' having an absolute value greater than or equal to the absolute value of the
-#' observed regression coefficient.
+#' having t-statistic with an absolute value greater than or equal to the 
+#' absolute value of the t-statistic for the observed regression coefficient.
 #' 
 #' @param reg_form String specifying the regression formula in the format 'DV
 #'  ~ IV1 + IV2 ... + IV3'.
@@ -64,10 +64,9 @@ if (reg_type == 'OLS') {
 # Obtain observed t value for regression coefficient
 obs_t <- coef(summary(obs_model))[var,"t value"]
 
-# Extract coefficient values with vectorized method - double check works same with rlm
-perm_t_all <- lapply(perm_models, '[[', 'coefficients')  # OLD
-perm_summary_all <- lapply(perm_models, summary)  # WORKS
-perm_coeffs_all <- lapply(perm_summary_all, coef) # WORKS 
+# Extract coefficient values
+perm_summary_all <- lapply(perm_models, summary)  
+perm_coeffs_all <- lapply(perm_summary_all, coef) 
 perm_t_all <- unlist(plyr::llply(perm_coeffs_all,function(x) x[var, "t value"]))
 
 # Show location of observed p-value in null distribution
