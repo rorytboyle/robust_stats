@@ -34,7 +34,7 @@
 permute_reg_coeff_p <- function(reg_form, var, data, n_perms=5000, reg_type='OLS') {
 
 # Get necessary libraries
-library(modelr); library(purrr)
+library(plyr); library(dplyr); library(modelr); library(purrr)
   
 # Permute dependent variable (Y)
 perm_data <- permute(data, n_perms, var)
@@ -61,19 +61,21 @@ if (reg_type == 'OLS') {
   perm_models <- map(perm_data$perm, ~ rlm(robust_reg_form, data = .))
 }
 
-# Obtain observed coefficient
-obs_coeff <- obs_model$coefficients[var]
+# Obtain observed t value for regression coefficient
+obs_t <- coef(summary(obs_model))[var,"t value"]
 
-# Extract coefficient values
-perm_coeffs_all <- lapply(perm_models, '[[', 'coefficients')
-perm_coeffs <- unlist(lapply(perm_coeffs_all, '[[', var))
+# Extract coefficient values with vectorized method - double check works same with rlm
+perm_t_all <- lapply(perm_models, '[[', 'coefficients')  # OLD
+perm_summary_all <- lapply(perm_models, summary)  # WORKS
+perm_coeffs_all <- lapply(perm_summary_all, coef) # WORKS 
+perm_t_all <- unlist(plyr::llply(perm_coeffs_all,function(x) x[var, "t value"]))
 
-# Show location of observed p-value in empirical null distribution
-hist(perm_coeffs)
-abline(v=obs_coeff, col='red', lwd=3)
+# Show location of observed p-value in null distribution
+hist(perm_t_all, main = 'Empirical null distribution', xlab='Permuted t-statistic')
+abline(v=obs_t, col='red', lwd=3)
 
 # Calculate permuted p value
-perm_p <- sum(abs(perm_coeffs) >= abs(obs_coeff)) / length(perm_coeffs)
+perm_p <- sum(abs(perm_t_all) >= abs(obs_t)) / length(perm_t_all)
 
 return(perm_p)
 }
