@@ -6,4 +6,3 @@ Some functions used for robust statistics
 **permute_reg_coeff_p.R** = obtains a permuted p-value for a partial regression coefficient (using either linear regression or robust regression)
 
 **permute_reg_coeff_p_parallel.R** = parallelised version of permute_reg_coeff.p
-- Need to try to speed up this function - not currently showing any performance benefit over permute_reg_coeff_p.R
