@@ -5,6 +5,8 @@
 #' equal to the probability of a randomly permuted regression coefficients 
 #' having t-statistic with an absolute value greater than or equal to the 
 #' absolute value of the t-statistic for the observed regression coefficient.
+#' Requires following libraries: plyr, dplyr, modelr, purr
+#' Optionally requires MASS (if using a robust regression)
 #' 
 #' @param reg_form String specifying the regression formula in the format 'DV
 #'  ~ IV1 + IV2 ... + IV3'.
